@@ -1,0 +1,366 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "0df0f716",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Collecting statsforecast\n",
+      "  Downloading statsforecast-1.7.6-py3-none-any.whl (134 kB)\n",
+      "\u001b[K     |████████████████████████████████| 134 kB 708 kB/s eta 0:00:01\n",
+      "\u001b[?25hCollecting utilsforecast>=0.1.4\n",
+      "  Downloading utilsforecast-0.2.3-py3-none-any.whl (40 kB)\n",
+      "\u001b[K     |████████████████████████████████| 40 kB 728 kB/s eta 0:00:01\n",
+      "\u001b[?25hCollecting coreforecast>=0.0.12\n",
+      "  Downloading coreforecast-0.0.12-py3-none-macosx_10_9_x86_64.whl (125 kB)\n",
+      "\u001b[K     |████████████████████████████████| 125 kB 688 kB/s eta 0:00:01\n",
+      "\u001b[?25hRequirement already satisfied: threadpoolctl in ./opt/anaconda3/lib/python3.9/site-packages (from statsforecast) (2.2.0)\n",
+      "Collecting numpy>=1.21.6\n",
+      "  Downloading numpy-2.0.2-cp39-cp39-macosx_10_9_x86_64.whl (21.2 MB)\n",
+      "\u001b[K     |████████████████████████████████| 21.2 MB 77 kB/s eta 0:00:012    |████████▊                       | 5.8 MB 1.0 MB/s eta 0:00:16     |█████████████████▋              | 11.7 MB 757 kB/s eta 0:00:13     |█████████████████▊              | 11.7 MB 757 kB/s eta 0:00:13     |███████████████████▋            | 13.0 MB 1.0 MB/s eta 0:00:08     |█████████████████████████████▌  | 19.5 MB 1.1 MB/s eta 0:00:02\n",
+      "\u001b[?25hRequirement already satisfied: scipy>=1.7.3 in ./opt/anaconda3/lib/python3.9/site-packages (from statsforecast) (1.7.3)\n",
+      "Requirement already satisfied: numba>=0.55.0 in ./opt/anaconda3/lib/python3.9/site-packages (from statsforecast) (0.55.1)\n",
+      "Requirement already satisfied: statsmodels>=0.13.2 in ./opt/anaconda3/lib/python3.9/site-packages (from statsforecast) (0.13.2)\n",
+      "Requirement already satisfied: pandas>=1.3.5 in ./opt/anaconda3/lib/python3.9/site-packages (from statsforecast) (1.4.2)\n",
+      "Collecting fugue>=0.8.1\n",
+      "  Downloading fugue-0.9.1-py3-none-any.whl (278 kB)\n",
+      "\u001b[K     |████████████████████████████████| 278 kB 1.5 MB/s eta 0:00:01\n",
+      "\u001b[?25hRequirement already satisfied: cloudpickle in ./opt/anaconda3/lib/python3.9/site-packages (from statsforecast) (2.0.0)\n",
+      "Requirement already satisfied: tqdm in ./opt/anaconda3/lib/python3.9/site-packages (from statsforecast) (4.64.0)\n",
+      "Collecting importlib_resources\n",
+      "  Downloading importlib_resources-6.4.4-py3-none-any.whl (35 kB)\n",
+      "Collecting adagio>=0.2.4\n",
+      "  Downloading adagio-0.2.6-py3-none-any.whl (19 kB)\n",
+      "Collecting triad>=0.9.7\n",
+      "  Downloading triad-0.9.8-py3-none-any.whl (62 kB)\n",
+      "\u001b[K     |████████████████████████████████| 62 kB 186 kB/s eta 0:00:01\n",
+      "\u001b[?25hCollecting numpy>=1.21.6\n",
+      "  Downloading numpy-1.21.6-cp39-cp39-macosx_10_9_x86_64.whl (17.0 MB)\n",
+      "\u001b[K     |████████████████████████████████| 17.0 MB 1.1 MB/s eta 0:00:01    |█████████████████▊              | 9.4 MB 1.0 MB/s eta 0:00:08\n",
+      "\u001b[?25hRequirement already satisfied: setuptools in ./opt/anaconda3/lib/python3.9/site-packages (from numba>=0.55.0->statsforecast) (61.2.0)\n",
+      "Requirement already satisfied: llvmlite<0.39,>=0.38.0rc1 in ./opt/anaconda3/lib/python3.9/site-packages (from numba>=0.55.0->statsforecast) (0.38.0)\n",
+      "Requirement already satisfied: python-dateutil>=2.8.1 in ./opt/anaconda3/lib/python3.9/site-packages (from pandas>=1.3.5->statsforecast) (2.8.2)\n",
+      "Requirement already satisfied: pytz>=2020.1 in ./opt/anaconda3/lib/python3.9/site-packages (from pandas>=1.3.5->statsforecast) (2024.1)\n",
+      "Requirement already satisfied: six>=1.5 in ./opt/anaconda3/lib/python3.9/site-packages (from python-dateutil>=2.8.1->pandas>=1.3.5->statsforecast) (1.16.0)\n",
+      "Requirement already satisfied: packaging>=21.3 in ./opt/anaconda3/lib/python3.9/site-packages (from statsmodels>=0.13.2->statsforecast) (21.3)\n",
+      "Requirement already satisfied: patsy>=0.5.2 in ./opt/anaconda3/lib/python3.9/site-packages (from statsmodels>=0.13.2->statsforecast) (0.5.2)\n",
+      "Requirement already satisfied: pyparsing!=3.0.5,>=2.0.2 in ./opt/anaconda3/lib/python3.9/site-packages (from packaging>=21.3->statsmodels>=0.13.2->statsforecast) (3.0.4)\n",
+      "Collecting fsspec>=2022.5.0\n",
+      "  Downloading fsspec-2024.6.1-py3-none-any.whl (177 kB)\n",
+      "\u001b[K     |████████████████████████████████| 177 kB 497 kB/s eta 0:00:01\n",
+      "\u001b[?25hCollecting fs\n",
+      "  Downloading fs-2.4.16-py2.py3-none-any.whl (135 kB)\n",
+      "\u001b[K     |████████████████████████████████| 135 kB 836 kB/s eta 0:00:01\n",
+      "\u001b[?25hCollecting pyarrow>=6.0.1\n",
+      "  Downloading pyarrow-17.0.0-cp39-cp39-macosx_10_15_x86_64.whl (29.0 MB)\n",
+      "\u001b[K     |████████████████████████████████| 29.0 MB 314 kB/s eta 0:00:01\n",
+      "\u001b[?25hRequirement already satisfied: appdirs~=1.4.3 in ./opt/anaconda3/lib/python3.9/site-packages (from fs->triad>=0.9.7->fugue>=0.8.1->statsforecast) (1.4.4)\n",
+      "Requirement already satisfied: zipp>=3.1.0 in ./opt/anaconda3/lib/python3.9/site-packages (from importlib_resources->coreforecast>=0.0.12->statsforecast) (3.7.0)\n",
+      "Installing collected packages: numpy, pyarrow, fsspec, fs, triad, importlib-resources, adagio, utilsforecast, fugue, coreforecast, statsforecast\n",
+      "  Attempting uninstall: numpy\n",
+      "    Found existing installation: numpy 1.21.5\n",
+      "    Uninstalling numpy-1.21.5:\n",
+      "      Successfully uninstalled numpy-1.21.5\n",
+      "  Attempting uninstall: fsspec\n",
+      "    Found existing installation: fsspec 2022.2.0\n",
+      "    Uninstalling fsspec-2022.2.0:\n",
+      "      Successfully uninstalled fsspec-2022.2.0\n",
+      "\u001b[31mERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.\n",
+      "daal4py 2021.5.0 requires daal==2021.4.0, which is not installed.\u001b[0m\n",
+      "Successfully installed adagio-0.2.6 coreforecast-0.0.12 fs-2.4.16 fsspec-2024.6.1 fugue-0.9.1 importlib-resources-6.4.4 numpy-1.21.6 pyarrow-17.0.0 statsforecast-1.7.6 triad-0.9.8 utilsforecast-0.2.3\n",
+      "Note: you may need to restart the kernel to use updated packages.\n"
+     ]
+    }
+   ],
+   "source": [
+    "pip install statsforecast"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "6a514562",
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "NameError",
+     "evalue": "name 'data' is not defined",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mNameError\u001b[0m                                 Traceback (most recent call last)",
+      "Input \u001b[0;32mIn [2]\u001b[0m, in \u001b[0;36m<cell line: 3>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[38;5;66;03m#Historic Averages\u001b[39;00m\n\u001b[1;32m      2\u001b[0m \u001b[38;5;28;01mfrom\u001b[39;00m \u001b[38;5;21;01mstatsforecast\u001b[39;00m\u001b[38;5;21;01m.\u001b[39;00m\u001b[38;5;21;01mmodels\u001b[39;00m \u001b[38;5;28;01mimport\u001b[39;00m HistoricAverage\n\u001b[0;32m----> 3\u001b[0m y_mean \u001b[38;5;241m=\u001b[39m \u001b[43mdata\u001b[49m\u001b[38;5;241m.\u001b[39m values\n\u001b[1;32m      5\u001b[0m \u001b[38;5;66;03m#Define the model fit and predict\u001b[39;00m\n\u001b[1;32m      6\u001b[0m model \u001b[38;5;241m=\u001b[39m HistoricAverage()\n",
+      "\u001b[0;31mNameError\u001b[0m: name 'data' is not defined"
+     ]
+    }
+   ],
+   "source": [
+    "#Historic Averages\n",
+    "from statsforecast.models import HistoricAverage\n",
+    "y_mean = data. values\n",
+    "\n",
+    "#Define the model fit and predict\n",
+    "model = HistoricAverage()\n",
+    "model = model.fit(y=y_mean)\n",
+    "y_hat_dict = model.predict (h=3)\n",
+    "\n",
+    "y_hat_dict"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "de787fec",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "pd.to_datetime('2024-01-01', '2024-02-01', '2024-03-01')\n",
+    "y_pred_df = pd.Dataframe['mean_forecast': y_hat_dict¨(¨mean¨), index = months_pred"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b4f94019",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig, ax = plt.subplots (1,1, figsize = (20,8))\n",
+    "\n",
+    "plot_df =pd.concat ([data, y_pred_df])\n",
+    "plot_df.columns = ['values', 'mean_forecast']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7106d387",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "data.values.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "36914fb1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "data.values.reshape(-1, ).shape "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "68d2c77d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Naive's usage exapmple \n",
+    "from stats.forecast import Naive\n",
+    "\n",
+    "model = Naive ()\n",
+    "model = mode.fit(y=data.values)\n",
+    "y_hat_dict = model.predict (h=3)\n",
+    "\n",
+    "y_hat_dict\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4274fb25",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "Seasonal naive"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "28c0fb8c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from statsforecast.models import SeasonalNaive\n",
+    "\n",
+    "model = SeasonalNaive (season_length =12)\n",
+    "model = model.fit (y=data.values)\n",
+    "y_hat_dict = model.predict (h=3)\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9cad8535",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from statsforecast.models import RandomWalkWithDrift\n",
+    "\n",
+    "model = RandomWalkWithDrift()\n",
+    "model = model.fit (y=data.values)\n",
+    "y_hat_dict = model.predict (h=3)\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "5c461753",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#en cuestion del oro, creo que yo escogeria el seasonal naive method porque se basa en el valor final pero tambien toma en cuenta el promedio de las ultimas de estas,\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2ad8b2f0",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "model = SeaonalNaive #el que escogi"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b5e840de",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "# RandomWalkWithDrift's usage example:\n",
+    "from statsforecast.models import RandomWalkWithDrift\n",
+    "\n",
+    "# Define the model, fit and predict:\n",
+    "model = RandomWalkWithDrift()\n",
+    "model = model.fit(y=data.values)\n",
+    "y_hat_dict = model.predict(h=3)\n",
+    "\n",
+    "y_hat_dict"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "87c73264",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Define the model, fit and predict:\n",
+    "model = SeasonalNaive(season_length=12)\n",
+    "model = model.fit(y=data.values)\n",
+    "mean = model.predict(h=12)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "bca82d86",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# augment(model_name, time_var, obs_values)\n",
+    "augment_df = augment(\"Mean\",data.index,data)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ac7b5eee",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "augment_df"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "8e46a169",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Creating histogram\n",
+    "fig, axs = plt.subplots(1, 1,\n",
+    "                        figsize =(20, 8),\n",
+    "                        tight_layout = True)\n",
+    "\n",
+    "axs.hist(augment_df[\"residuals\"], bins = 20)\n",
+    "\n",
+    "# Specify graph features:\n",
+    "axs.set_title('histograma residuales', fontsize=22)\n",
+    "axs.set_ylabel('conteo', fontsize=20)\n",
+    "axs.set_xlabel('residuales', fontsize=20)\n",
+    "\n",
+    "# Show plot\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0c63dcb5",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import math\n",
+    "\n",
+    "ticker_data = augment_df[\"residuals\"]\n",
+    "ticker_data_acf = [ticker_data.autocorr(i) for i in range(1,25)]\n",
+    "\n",
+    "test_df = pd.DataFrame([ticker_data_acf]).T\n",
+    "test_df.columns = ['Autocorr']\n",
+    "test_df.index += 1\n",
+    "test_df.plot(kind='bar', width = 0.05, figsize = (20, 4))\n",
+    "\n",
+    "# Statisfical significance.\n",
+    "n = len(augment_df['residuals'])\n",
+    "plt.axhline(y = 2/math.sqrt(n), color = 'r', linestyle = 'dashed')\n",
+    "plt.axhline(y = -2/math.sqrt(n), color = 'r', linestyle = 'dashed')\n",
+    "\n",
+    "# Adding plot title.\n",
+    "plt.title(\"Residuals from the Naive method\")\n",
+    "\n",
+    "# Providing x-axis name.\n",
+    "plt.xlabel(\"lag[1]\")\n",
+    "\n",
+    "# Providing y-axis name.\n",
+    "plt.ylabel(\"ACF\")"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.12"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
